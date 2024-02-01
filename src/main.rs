@@ -4,7 +4,7 @@ fn main() {
     let notes = [
         "C", "C#", "Db", "D", "D#", "Eb",
         "E", "F", "F#", "Gb", "G", "G#",
-        "Ab", "A", "A#", "Bb", "B", "Cb",
+        "Ab", "A", "A#", "Bb", "B",
     ];
     for note in notes {
         let root = Note::from_str(note).unwrap();
