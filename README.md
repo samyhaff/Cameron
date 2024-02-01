@@ -10,3 +10,4 @@
 * [ ] Blues scales
 * [ ] Seven chords
 * [ ] Chord progressions
+* ...

@@ -1,4 +1,5 @@
-use cameron::*;
+use cameron::notes::*;
+use cameron::chords::*;
 
 fn main() {
     let notes = [
