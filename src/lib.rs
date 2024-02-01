@@ -65,12 +65,42 @@ impl Note {
         }
     }
 
+    fn down_semitone(&self) -> Note {
+        match self {
+            Note::WhiteNote(white_note) => Note::Flat(white_note.clone()),
+            Note::Flat(white_note) =>
+                match white_note {
+                    WhiteNote::C => Note::Flat(WhiteNote::B),
+                    WhiteNote::D => Note::WhiteNote(WhiteNote::C),
+                    WhiteNote::E => Note::WhiteNote(WhiteNote::D),
+                    WhiteNote::F => Note::Flat(WhiteNote::E),
+                    WhiteNote::G => Note::WhiteNote(WhiteNote::F),
+                    WhiteNote::A => Note::WhiteNote(WhiteNote::G),
+                    WhiteNote::B => Note::Flat(WhiteNote::A),
+                },
+            Note::Sharp(white_note) => Note::WhiteNote(white_note.clone()),
+        }
+    }
+
     fn up_semitones(&self, n_semitones: u8) -> Note {
         let mut note = self.clone();
         for _ in 0..n_semitones {
             note = note.up_semitone();
         }
         note
+    }
+
+    fn major_third(&self) -> Note {
+        self.up_semitones(4)
+    }
+
+    fn minor_third(&self) -> Note {
+        let note = self.up_semitones(4);
+        note.down_semitone()
+    }
+
+    fn perfect_fifth(&self) -> Note {
+        self.up_semitones(7)
     }
 
     pub fn from_str(s: &str) -> Option<Note> {
@@ -102,13 +132,13 @@ impl Chord {
     pub fn get_notes(&self) -> Vec<Note> {
         match self.quality {
             ChordQuality::Major => {
-                let major_third = self.root.up_semitones(4);
-                let perfect_fifth = self.root.up_semitones(7);
+                let major_third = self.root.major_third();
+                let perfect_fifth = self.root.perfect_fifth();
                 vec![self.root.clone(), major_third, perfect_fifth]
             },
             ChordQuality::Minor => {
-                let minor_third = self.root.up_semitones(3);
-                let perfect_fifth = self.root.up_semitones(7);
+                let minor_third = self.root.minor_third();
+                let perfect_fifth = self.root.perfect_fifth();
                 vec![self.root.clone(), minor_third, perfect_fifth]
             },
         }
