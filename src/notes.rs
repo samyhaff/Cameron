@@ -10,6 +10,20 @@ pub enum Note {
     Flat(WhiteNote),
 }
 
+impl WhiteNote {
+    fn get_index(&self) -> u8 {
+        match self {
+            WhiteNote::C => 0,
+            WhiteNote::D => 1,
+            WhiteNote::E => 2,
+            WhiteNote::F => 3,
+            WhiteNote::G => 4,
+            WhiteNote::A => 5,
+            WhiteNote::B => 6,
+        }
+    }
+}
+
 impl fmt::Display for Note {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -73,17 +87,48 @@ impl Note {
         note
     }
 
+    fn get_white_note(&self) -> WhiteNote {
+        match self {
+            Note::WhiteNote(white_note) => white_note.clone(),
+            Note::Sharp(white_note) => white_note.clone(),
+            Note::Flat(white_note) => white_note.clone(),
+        }
+    }
+
+    fn get_generic_interval(&self, other: &Note) -> u8 {
+        let first = self.get_white_note();
+        let second = other.get_white_note();
+        let first_index = first.get_index();
+        let second_index = second.get_index();
+        (second_index + 7 - first_index) % 7 + 1
+    }
+
+    pub fn major_second(&self) -> Note {
+        unimplemented!()
+    }
+
     pub fn major_third(&self) -> Note {
-        self.up_semitones(4)
+        unimplemented!()
     }
 
     pub fn minor_third(&self) -> Note {
-        let note = self.up_semitones(4);
-        note.down_semitone()
+        unimplemented!()
+    }
+
+    pub fn perfect_fourth(&self) -> Note {
+        unimplemented!()
     }
 
     pub fn perfect_fifth(&self) -> Note {
-        self.up_semitones(7)
+        unimplemented!()
+    }
+
+    pub fn major_sixth(&self) -> Note {
+        unimplemented!()
+    }
+
+    pub fn major_seventh(&self) -> Note {
+        unimplemented!()
     }
 
     pub fn from_str(s: &str) -> Option<Note> {

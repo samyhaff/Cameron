@@ -19,8 +19,8 @@ impl fmt::Display for Chord {
 }
 
 impl Chord {
-    pub fn new(root: &Note, quality: ChordQuality) -> Chord {
-        Chord { root: root.clone(), quality }
+    pub fn new(root: Note, quality: ChordQuality) -> Chord {
+        Chord { root, quality }
     }
 
     pub fn get_notes(&self) -> Vec<Note> {

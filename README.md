@@ -3,11 +3,13 @@
 ## TODO
 
 * [X] Notes
-* [X] Major Triads
-* [X] Minor Triads
+* [X] Generic intervals
+* [ ] Specific intervals
+* [ ] Major Triads
+* [ ] Minor Triads
+* [ ] Seven chords
 * [ ] Major scales
 * [ ] Minor scales
 * [ ] Blues scales
-* [ ] Seven chords
 * [ ] Chord progressions
 * ...
