@@ -200,7 +200,7 @@ impl Note {
         }
     }
 
-    fn up_interval(&self, interval: Interval) -> Note {
+    pub fn up_interval(&self, interval: Interval) -> Note {
         let white_note = self.get_white_note();
         let upper_white_note = white_note.nth_successor(interval.number - 1);
         let n_semitones = interval.get_number_semitones();
