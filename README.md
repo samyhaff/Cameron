@@ -4,7 +4,7 @@
 
 * [X] Notes
 * [X] Generic intervals
-* [ ] Specific intervals
+* [X] Specific intervals
 * [ ] Major Triads
 * [ ] Minor Triads
 * [ ] Seven chords

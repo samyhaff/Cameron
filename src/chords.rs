@@ -23,18 +23,18 @@ impl Chord {
         Chord { root, quality }
     }
 
-    pub fn get_notes(&self) -> Vec<Note> {
-        match self.quality {
-            ChordQuality::Major => {
-                let major_third = self.root.major_third();
-                let perfect_fifth = self.root.perfect_fifth();
-                vec![self.root.clone(), major_third, perfect_fifth]
-            },
-            ChordQuality::Minor => {
-                let minor_third = self.root.minor_third();
-                let perfect_fifth = self.root.perfect_fifth();
-                vec![self.root.clone(), minor_third, perfect_fifth]
-            },
-        }
-    }
+    // pub fn get_notes(&self) -> Vec<Note> {
+    //     match self.quality {
+    //         ChordQuality::Major => {
+    //             let major_third = self.root.major_third();
+    //             let perfect_fifth = self.root.perfect_fifth();
+    //             vec![self.root.clone(), major_third, perfect_fifth]
+    //         },
+    //         ChordQuality::Minor => {
+    //             let minor_third = self.root.minor_third();
+    //             let perfect_fifth = self.root.perfect_fifth();
+    //             vec![self.root.clone(), minor_third, perfect_fifth]
+    //         },
+    //     }
+    // }
 }
