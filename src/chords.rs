@@ -1,6 +1,8 @@
 use std::fmt;
+use regex::Regex;
 use crate::notes::*;
 
+#[derive(Debug, PartialEq)]
 pub enum ChordQuality {
     Major,
     Minor,
@@ -30,6 +32,20 @@ impl fmt::Display for Chord {
 impl Chord {
     pub fn new(root: Note, quality: ChordQuality) -> Chord {
         Chord { root, quality }
+    }
+
+    pub fn from_str(s: &str) -> Option<Chord> {
+        let re = Regex::new(r"([A-Ga-g][#b]?)((?:maj7|m7|7|m)?)").unwrap();
+        let caps = re.captures(s)?;
+        let root = Note::from_str(caps.get(1)?.as_str())?;
+        let quality = match caps.get(2)?.as_str() {
+            "maj7" => ChordQuality::MajorSeventh,
+            "m7" => ChordQuality::MinorSeventh,
+            "7" => ChordQuality::DominantSeventh,
+            "m" => ChordQuality::Minor,
+            _ => ChordQuality::Major,
+        };
+        Some(Chord::new(root, quality))
     }
 
     pub fn get_notes(&self) -> Vec<Note> {
@@ -69,6 +85,29 @@ impl Chord {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_chord_from_str() {
+        let chord = Chord::from_str("C").unwrap();
+        assert_eq!(chord.root, Note::WhiteNote(WhiteNote::C));
+        assert_eq!(chord.quality, ChordQuality::Major);
+
+        let chord = Chord::from_str("Cm").unwrap();
+        assert_eq!(chord.root, Note::WhiteNote(WhiteNote::C));
+        assert_eq!(chord.quality, ChordQuality::Minor);
+
+        let chord = Chord::from_str("C7").unwrap();
+        assert_eq!(chord.root, Note::WhiteNote(WhiteNote::C));
+        assert_eq!(chord.quality, ChordQuality::DominantSeventh);
+
+        let chord = Chord::from_str("Cmaj7").unwrap();
+        assert_eq!(chord.root, Note::WhiteNote(WhiteNote::C));
+        assert_eq!(chord.quality, ChordQuality::MajorSeventh);
+
+        let chord = Chord::from_str("Cm7").unwrap();
+        assert_eq!(chord.root, Note::WhiteNote(WhiteNote::C));
+        assert_eq!(chord.quality, ChordQuality::MinorSeventh);
+    }
 
     #[test]
     fn test_chord_get_notes() {
