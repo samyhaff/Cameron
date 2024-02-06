@@ -5,11 +5,12 @@
 * [X] Notes
 * [X] Generic intervals
 * [X] Specific intervals
-* [ ] Major Triads
-* [ ] Minor Triads
+* [X] Major Triads
+* [X] Minor Triads
 * [ ] Seven chords
-* [ ] Major scales
-* [ ] Minor scales
+* [X] Major scales
+* [ ] Pentatonic scales
+* [X] Minor scales
 * [ ] Blues scales
 * [ ] Chord progressions
 * ...

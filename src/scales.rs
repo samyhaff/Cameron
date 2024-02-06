@@ -76,5 +76,27 @@ mod test {
         assert_eq!(notes[4], Note::WhiteNote(WhiteNote::G));
         assert_eq!(notes[5], Note::Flat(WhiteNote::A));
         assert_eq!(notes[6], Note::Flat(WhiteNote::B));
+
+        let scale = Scale::new(Note::WhiteNote(WhiteNote::A), ScaleType::Minor);
+        let notes = scale.get_notes();
+        assert_eq!(notes.len(), 7);
+        assert_eq!(notes[0], Note::WhiteNote(WhiteNote::A));
+        assert_eq!(notes[1], Note::WhiteNote(WhiteNote::B));
+        assert_eq!(notes[2], Note::WhiteNote(WhiteNote::C));
+        assert_eq!(notes[3], Note::WhiteNote(WhiteNote::D));
+        assert_eq!(notes[4], Note::WhiteNote(WhiteNote::E));
+        assert_eq!(notes[5], Note::WhiteNote(WhiteNote::F));
+        assert_eq!(notes[6], Note::WhiteNote(WhiteNote::G));
+
+        let scale = Scale::new(Note::WhiteNote(WhiteNote::A), ScaleType::Major);
+        let notes = scale.get_notes();
+        assert_eq!(notes.len(), 7);
+        assert_eq!(notes[0], Note::WhiteNote(WhiteNote::A));
+        assert_eq!(notes[1], Note::WhiteNote(WhiteNote::B));
+        assert_eq!(notes[2], Note::Sharp(WhiteNote::C));
+        assert_eq!(notes[3], Note::WhiteNote(WhiteNote::D));
+        assert_eq!(notes[4], Note::WhiteNote(WhiteNote::E));
+        assert_eq!(notes[5], Note::Sharp(WhiteNote::F));
+        assert_eq!(notes[6], Note::Sharp(WhiteNote::G));
     }
 }
