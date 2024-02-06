@@ -1,6 +1,8 @@
 use std::fmt;
+use regex::Regex;
 use crate::notes::*;
 
+#[derive(Debug, PartialEq)]
 pub enum ScaleType {
     Major,
     Minor,
@@ -23,6 +25,18 @@ impl fmt::Display for Scale {
 impl Scale {
     pub fn new(root: Note, scale_type: ScaleType) -> Scale {
         Scale { root, scale_type, }
+    }
+
+    pub fn from_str(s: &str) -> Option<Scale> {
+        let re = Regex::new(r"([A-Ga-g][#b]?)\s*((?:major|minor))").unwrap();
+        let caps = re.captures(s)?;
+        let root = Note::from_str(caps.get(1)?.as_str())?;
+        let scale_type = match caps.get(2)?.as_str() {
+            "major" => ScaleType::Major,
+            "minor" => ScaleType::Minor,
+            _ => return None,
+        };
+        Some(Scale::new(root, scale_type))
     }
 
     pub fn get_notes(&self) -> Vec<Note> {
@@ -52,6 +66,33 @@ impl Scale {
 #[cfg(test)]
 mod test {
     use super::*;
+
+    #[test]
+    fn test_scale_from_str() {
+        let scale = Scale::from_str("C major").unwrap();
+        assert_eq!(scale.root, Note::WhiteNote(WhiteNote::C));
+        assert_eq!(scale.scale_type, ScaleType::Major);
+
+        let scale = Scale::from_str("C minor").unwrap();
+        assert_eq!(scale.root, Note::WhiteNote(WhiteNote::C));
+        assert_eq!(scale.scale_type, ScaleType::Minor);
+
+        let scale = Scale::from_str("C# major").unwrap();
+        assert_eq!(scale.root, Note::Sharp(WhiteNote::C));
+        assert_eq!(scale.scale_type, ScaleType::Major);
+
+        let scale = Scale::from_str("C# minor").unwrap();
+        assert_eq!(scale.root, Note::Sharp(WhiteNote::C));
+        assert_eq!(scale.scale_type, ScaleType::Minor);
+
+        let scale = Scale::from_str("Cb major").unwrap();
+        assert_eq!(scale.root, Note::Flat(WhiteNote::C));
+        assert_eq!(scale.scale_type, ScaleType::Major);
+
+        let scale = Scale::from_str("Cb minor").unwrap();
+        assert_eq!(scale.root, Note::Flat(WhiteNote::C));
+        assert_eq!(scale.scale_type, ScaleType::Minor);
+    }
 
     #[test]
     fn test_scale_get_notes() {

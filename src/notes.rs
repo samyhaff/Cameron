@@ -157,7 +157,10 @@ impl Note {
                 WhiteNote::B => 11,
             },
             Note::Sharp(white_note) => (1 + Note::WhiteNote(white_note.clone()).get_index()) % 12,
-            Note::Flat(white_note) => Note::WhiteNote(white_note.clone()).get_index() - 1,
+            Note::Flat(white_note) => {
+                let white_note_index = Note::WhiteNote(white_note.clone()).get_index();
+                if white_note_index == 0 { 11 } else { white_note_index - 1 }
+            }
         }
     }
 
