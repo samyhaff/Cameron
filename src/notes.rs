@@ -1,6 +1,7 @@
 use std::fmt;
+use strum_macros::EnumIter;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, EnumIter, Hash)]
 pub enum WhiteNote { C, D, E, F, G, A, B }
 
 #[derive(Debug, Clone)]
@@ -110,6 +111,14 @@ impl fmt::Display for Note {
 impl PartialEq for Note {
     fn eq(&self, other: &Self) -> bool {
         self.get_index() == other.get_index()
+    }
+}
+
+impl Eq for Note {}
+
+impl std::hash::Hash for Note {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.get_index().hash(state);
     }
 }
 

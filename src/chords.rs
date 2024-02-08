@@ -1,8 +1,11 @@
+use std::collections::HashSet;
 use std::fmt;
 use regex::Regex;
+use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
 use crate::notes::*;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Hash, Eq, EnumIter)]
 pub enum ChordQuality {
     Major,
     Minor,
@@ -11,6 +14,7 @@ pub enum ChordQuality {
     MinorSeventh,
 }
 
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
 pub struct Chord {
     root: Note,
     quality: ChordQuality,
@@ -79,6 +83,22 @@ impl Chord {
                 vec![self.root.clone(), minor_third, perfect_fifth, minor_seventh]
             },
         }
+    }
+
+    pub fn reverse_lookup(notes: &Vec<Note>) -> HashSet<Chord> {
+        let mut possible_chords = HashSet::new();
+        for white_note in WhiteNote::iter() {
+            for root in [Note::WhiteNote(white_note.clone()), Note::Sharp(white_note.clone()), Note::Flat(white_note)].iter() {
+                for quality in ChordQuality::iter() {
+                    let chord = Chord::new(root.clone(), quality);
+                    let chord_notes = chord.get_notes();
+                    if notes.iter().all(|note| chord_notes.contains(note)) {
+                        possible_chords.insert(chord);
+                    }
+                }
+            }
+        }
+        possible_chords
     }
 }
 
@@ -162,5 +182,24 @@ mod tests {
         assert_eq!(notes[1], Note::Flat(WhiteNote::E));
         assert_eq!(notes[2], Note::WhiteNote(WhiteNote::G));
         assert_eq!(notes[3], Note::Flat(WhiteNote::B));
+    }
+
+    #[test]
+    fn test_chord_reverse_lookup() {
+        let notes = vec![
+            Note::WhiteNote(WhiteNote::C),
+            Note::WhiteNote(WhiteNote::E),
+            Note::WhiteNote(WhiteNote::G),
+        ];
+        let chords = Chord::reverse_lookup(&notes);
+        assert!(chords.contains(&Chord::new(Note::WhiteNote(WhiteNote::C), ChordQuality::Major)));
+
+        let notes = vec![
+            Note::WhiteNote(WhiteNote::A),
+            Note::WhiteNote(WhiteNote::C),
+            Note::WhiteNote(WhiteNote::E),
+        ];
+        let chords = Chord::reverse_lookup(&notes);
+        assert!(chords.contains(&Chord::new(Note::WhiteNote(WhiteNote::A), ChordQuality::Minor)));
     }
 }

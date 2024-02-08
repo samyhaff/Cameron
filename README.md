@@ -13,5 +13,5 @@
 * [X] Minor scales
 * [ ] Blues scales
 * [ ] Chord progressions
-* [ } Refactor unit tests to reduce code duplication
+* [ ] Refactor unit tests to reduce code duplication
 * ...
