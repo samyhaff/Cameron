@@ -9,7 +9,7 @@ fn main() {
         .subcommand(
             Command::new("scale")
                 .about("Displays he notes of a scale")
-                .arg(arg!([NOTE]))
+                .arg(arg!([SCALE]))
         )
         .subcommand(
             Command::new("chord")
@@ -20,17 +20,17 @@ fn main() {
 
     match matches.subcommand() {
         Some(("scale", scale_matches)) => {
-            if let Some(note) = scale_matches.get_one::<String>("NOTE") {
-                if let Some(note) = Note::from_str(note) {
-                    let notes = Scale::new(note, ScaleType::Major).get_notes();
+            if let Some(scale) = scale_matches.get_one::<String>("SCALE") {
+                if let Some(scale) = Scale::from_str(scale) {
+                    let notes = scale.get_notes();
                     println!("{}", notes.iter().map(|n| n.to_string()).collect::<Vec<String>>().join(" "));
                 }
                 else {
-                    println!("Invalid note provided.");
+                    println!("Invalid scale provided.");
                 }
             }
             else {
-                println!("No note provided.");
+                println!("No scale provided.");
             }
         }
         Some(("chord", chord_matches)) => {
