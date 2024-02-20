@@ -15,3 +15,4 @@
 * [ ] Chord progressions
 * [ ] Refactor unit tests to reduce code duplication
 * [ ] Improve reverse chord lookup logic
+* [ ] Improve cli
